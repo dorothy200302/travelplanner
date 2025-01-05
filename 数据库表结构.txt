@@ -1,0 +1,1118 @@
+-- mybatis.account_group definition
+
+CREATE TABLE `account_group` (
+  `group_id` int NOT NULL,
+  `account_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `account_name_en` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`group_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.blog_lables definition
+
+CREATE TABLE `blog_lables` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.city_code definition
+
+CREATE TABLE `city_code` (
+  `code` int NOT NULL AUTO_INCREMENT,
+  `city_name` varchar(122) DEFAULT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.config_info definition
+
+CREATE TABLE `config_info` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `data_id` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+  `group_id` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
+  `content` longtext COLLATE utf8mb3_bin NOT NULL COMMENT 'content',
+  `md5` varchar(32) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'md5',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `src_user` text COLLATE utf8mb3_bin COMMENT 'source user',
+  `src_ip` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'source ip',
+  `app_name` varchar(128) COLLATE utf8mb3_bin DEFAULT NULL,
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT '租户字段',
+  `c_desc` varchar(256) COLLATE utf8mb3_bin DEFAULT NULL,
+  `c_use` varchar(64) COLLATE utf8mb3_bin DEFAULT NULL,
+  `effect` varchar(64) COLLATE utf8mb3_bin DEFAULT NULL,
+  `type` varchar(64) COLLATE utf8mb3_bin DEFAULT NULL,
+  `c_schema` text COLLATE utf8mb3_bin,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_configinfo_datagrouptenant` (`data_id`,`group_id`,`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='config_info';
+
+
+-- mybatis.config_info_aggr definition
+
+CREATE TABLE `config_info_aggr` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `data_id` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+  `group_id` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+  `datum_id` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'datum_id',
+  `content` longtext COLLATE utf8mb3_bin NOT NULL COMMENT '内容',
+  `gmt_modified` datetime NOT NULL COMMENT '修改时间',
+  `app_name` varchar(128) COLLATE utf8mb3_bin DEFAULT NULL,
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT '租户字段',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_configinfoaggr_datagrouptenantdatum` (`data_id`,`group_id`,`tenant_id`,`datum_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='增加租户字段';
+
+
+-- mybatis.config_info_beta definition
+
+CREATE TABLE `config_info_beta` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `data_id` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+  `group_id` varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+  `app_name` varchar(128) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'app_name',
+  `content` longtext COLLATE utf8mb3_bin NOT NULL COMMENT 'content',
+  `beta_ips` varchar(1024) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'betaIps',
+  `md5` varchar(32) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'md5',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `src_user` text COLLATE utf8mb3_bin COMMENT 'source user',
+  `src_ip` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'source ip',
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT '租户字段',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_configinfobeta_datagrouptenant` (`data_id`,`group_id`,`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='config_info_beta';
+
+
+-- mybatis.config_info_tag definition
+
+CREATE TABLE `config_info_tag` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `data_id` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+  `group_id` varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
+  `tag_id` varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_id',
+  `app_name` varchar(128) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'app_name',
+  `content` longtext COLLATE utf8mb3_bin NOT NULL COMMENT 'content',
+  `md5` varchar(32) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'md5',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `src_user` text COLLATE utf8mb3_bin COMMENT 'source user',
+  `src_ip` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'source ip',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_configinfotag_datagrouptenanttag` (`data_id`,`group_id`,`tenant_id`,`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='config_info_tag';
+
+
+-- mybatis.config_tags_relation definition
+
+CREATE TABLE `config_tags_relation` (
+  `id` bigint NOT NULL COMMENT 'id',
+  `tag_name` varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_name',
+  `tag_type` varchar(64) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'tag_type',
+  `data_id` varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+  `group_id` varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
+  `nid` bigint NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`nid`),
+  UNIQUE KEY `uk_configtagrelation_configidtag` (`id`,`tag_name`,`tag_type`),
+  KEY `idx_tenant_id` (`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='config_tag_relation';
+
+
+-- mybatis.coupon definition
+
+CREATE TABLE `coupon` (
+  `name` varchar(20) DEFAULT NULL,
+  `number` int DEFAULT NULL,
+  `id` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.dateinfor definition
+
+CREATE TABLE `dateinfor` (
+  `dateId` bigint NOT NULL AUTO_INCREMENT,
+  `date` int DEFAULT NULL,
+  `week` int DEFAULT NULL,
+  `workday` int DEFAULT NULL,
+  `holidayToday` int DEFAULT NULL,
+  `holidayLegal` int DEFAULT NULL,
+  `holidayRecess` int DEFAULT NULL,
+  `dateCn` varchar(255) DEFAULT NULL,
+  `weekCn` varchar(255) DEFAULT NULL,
+  `workdayCn` varchar(255) DEFAULT NULL,
+  `holidayCn` varchar(255) DEFAULT NULL,
+  `holidayTodayCn` varchar(255) DEFAULT NULL,
+  `holidayLegalCn` varchar(255) DEFAULT NULL,
+  `holidayRecessCn` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`dateId`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.emailbox definition
+
+CREATE TABLE `emailbox` (
+  `email` varchar(50) DEFAULT NULL,
+  `code` varchar(5) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `status` tinyint DEFAULT NULL,
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.formparameter definition
+
+CREATE TABLE `formparameter` (
+  `x` float DEFAULT NULL,
+  `y` float DEFAULT NULL,
+  `width` float DEFAULT NULL,
+  `height` float DEFAULT NULL,
+  `formpath` varchar(40) DEFAULT NULL,
+  `formname` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.generalcategory definition
+
+CREATE TABLE `generalcategory` (
+  `id` int DEFAULT NULL,
+  `title` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.group_capacity definition
+
+CREATE TABLE `group_capacity` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `group_id` varchar(128) COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Group ID，空字符表示整个集群',
+  `quota` int unsigned NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+  `usage` int unsigned NOT NULL DEFAULT '0' COMMENT '使用量',
+  `max_size` int unsigned NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
+  `max_aggr_count` int unsigned NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数，，0表示使用默认值',
+  `max_aggr_size` int unsigned NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+  `max_history_count` int unsigned NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='集群、各Group容量信息表';
+
+
+-- mybatis.his_config_info definition
+
+CREATE TABLE `his_config_info` (
+  `id` bigint unsigned NOT NULL,
+  `nid` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `data_id` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+  `group_id` varchar(128) COLLATE utf8mb3_bin NOT NULL,
+  `app_name` varchar(128) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'app_name',
+  `content` longtext COLLATE utf8mb3_bin NOT NULL,
+  `md5` varchar(32) COLLATE utf8mb3_bin DEFAULT NULL,
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `src_user` text COLLATE utf8mb3_bin,
+  `src_ip` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
+  `op_type` char(10) COLLATE utf8mb3_bin DEFAULT NULL,
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT '租户字段',
+  PRIMARY KEY (`nid`),
+  KEY `idx_gmt_create` (`gmt_create`),
+  KEY `idx_gmt_modified` (`gmt_modified`),
+  KEY `idx_did` (`data_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='多租户改造';
+
+
+-- mybatis.hotel_lables definition
+
+CREATE TABLE `hotel_lables` (
+  `id` int DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.image definition
+
+CREATE TABLE `image` (
+  `stu_id` int NOT NULL,
+  `image` blob,
+  PRIMARY KEY (`stu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.internshipresume definition
+
+CREATE TABLE `internshipresume` (
+  `stuId` int DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `sex` varchar(4) DEFAULT NULL,
+  `birth` varchar(20) DEFAULT NULL,
+  `location` varchar(20) DEFAULT NULL,
+  `graduationSchool` varchar(20) DEFAULT NULL,
+  `major` varchar(10) DEFAULT NULL,
+  `email` varchar(10) DEFAULT NULL,
+  `tele` int DEFAULT NULL,
+  `age` int DEFAULT NULL,
+  `job` varchar(10) DEFAULT NULL,
+  `jobCity` varchar(20) DEFAULT NULL,
+  `honor` varchar(300) DEFAULT NULL,
+  `timePeriod` varchar(20) DEFAULT NULL,
+  `interest` varchar(20) DEFAULT NULL,
+  `skills` varchar(30) DEFAULT NULL,
+  `slefEvaluate` varchar(1024) DEFAULT NULL,
+  `industry` varchar(20) DEFAULT NULL,
+  `salary` int DEFAULT NULL,
+  `state` varchar(10) DEFAULT NULL,
+  `jobType` varchar(10) DEFAULT NULL,
+  KEY `in_stu` (`stuId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.job_demand definition
+
+CREATE TABLE `job_demand` (
+  `education` varchar(20) DEFAULT NULL,
+  `job_experience` varchar(6) DEFAULT NULL,
+  `job_Statu` varchar(7) DEFAULT NULL,
+  `describe` varchar(1024) DEFAULT NULL,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `id` bigint NOT NULL,
+  `number` int DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `company_id` bigint NOT NULL,
+  `liked` int unsigned DEFAULT NULL,
+  `type` int DEFAULT NULL,
+  `x` double DEFAULT NULL,
+  `y` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.job_list definition
+
+CREATE TABLE `job_list` (
+  `post` varchar(20) DEFAULT NULL,
+  `industry` varchar(20) DEFAULT NULL,
+  `department` varchar(20) DEFAULT NULL,
+  `salary` int DEFAULT NULL,
+  `job_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.major definition
+
+CREATE TABLE `major` (
+  `major_id` int NOT NULL,
+  `major_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `major_option` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `major_code` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`major_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.permissions definition
+
+CREATE TABLE `permissions` (
+  `role` varchar(50) NOT NULL,
+  `resource` varchar(255) NOT NULL,
+  `action` varchar(8) NOT NULL,
+  UNIQUE KEY `uk_role_permission` (`role`,`resource`,`action`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.railway definition
+
+CREATE TABLE `railway` (
+  `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
+  `starting_point` varchar(20) DEFAULT NULL,
+  `ending_point` varchar(20) DEFAULT NULL,
+  `location` varchar(20) DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `description` varchar(20) DEFAULT NULL,
+  `picture` text,
+  `id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.resort_lables definition
+
+CREATE TABLE `resort_lables` (
+  `id` int DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.resume_path definition
+
+CREATE TABLE `resume_path` (
+  `stu_id` int NOT NULL,
+  `pdfName` varchar(30) DEFAULT NULL,
+  `imageFileName` varchar(30) DEFAULT NULL,
+  `formpath` varchar(40) DEFAULT NULL,
+  `formname` varchar(40) DEFAULT NULL,
+  `pdfFileDir` varchar(20) DEFAULT NULL,
+  `imageDir` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`stu_id`),
+  KEY `path` (`pdfName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.roles definition
+
+CREATE TABLE `roles` (
+  `username` varchar(50) NOT NULL,
+  `role` varchar(50) NOT NULL,
+  UNIQUE KEY `idx_user_role` (`username`,`role`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.sales_order definition
+
+CREATE TABLE `sales_order` (
+  `order_id` bigint NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `amount` bigint DEFAULT NULL,
+  `good_id` bigint DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `paymentStatus` varchar(14) DEFAULT NULL,
+  `expireTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `sale_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.shop_hotel definition
+
+CREATE TABLE `shop_hotel` (
+  `id` bigint NOT NULL COMMENT '酒店id',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '酒店名称',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '酒店地址',
+  `price` int NOT NULL COMMENT '酒店价格',
+  `score` int NOT NULL COMMENT '酒店评分',
+  `brand` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '酒店品牌',
+  `city` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '所在城市',
+  `star_name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '酒店星级，1星到5星，1钻到5钻',
+  `business` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商圈',
+  `latitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '纬度',
+  `longitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '经度',
+  `pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '酒店图片',
+  `is_ad` tinyint(1) DEFAULT '0' COMMENT '是否广告',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.shop_lables definition
+
+CREATE TABLE `shop_lables` (
+  `id` int DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.tb_blog_comments definition
+
+CREATE TABLE `tb_blog_comments` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint unsigned NOT NULL COMMENT '用户id',
+  `blog_id` bigint unsigned NOT NULL COMMENT '探店id',
+  `parent_id` bigint unsigned NOT NULL COMMENT '关联的1级评论id，如果是一级评论，则值为0',
+  `answer_id` bigint unsigned NOT NULL COMMENT '回复的评论id',
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '回复的内容',
+  `liked` int unsigned DEFAULT NULL COMMENT '点赞数',
+  `status` tinyint unsigned DEFAULT NULL COMMENT '状态，0：正常，1：被举报，2：禁止查看',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.tb_follow definition
+
+CREATE TABLE `tb_follow` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint unsigned NOT NULL COMMENT '用户id',
+  `follow_user_id` bigint unsigned NOT NULL COMMENT '关联的用户id',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.tb_seckill_voucher definition
+
+CREATE TABLE `tb_seckill_voucher` (
+  `voucher_id` bigint unsigned NOT NULL COMMENT '关联的优惠券的id',
+  `stock` int NOT NULL COMMENT '库存',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `begin_time` timestamp NOT NULL COMMENT '生效时间',
+  `end_time` timestamp NOT NULL COMMENT '失效时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`voucher_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='秒杀优惠券表，与优惠券是一对一关系';
+
+
+-- mybatis.tb_shop_comments definition
+
+CREATE TABLE `tb_shop_comments` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint unsigned NOT NULL COMMENT '用户id',
+  `blog_id` bigint unsigned NOT NULL COMMENT '探店id',
+  `images` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '照片，最多9张，多张以","隔开',
+  `parent_id` bigint unsigned NOT NULL COMMENT '关联的1级评论id，如果是一级评论，则值为0',
+  `answer_id` bigint unsigned NOT NULL COMMENT '回复的评论id',
+  `content` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '探店的文字描述',
+  `liked` int unsigned DEFAULT NULL COMMENT '点赞数',
+  `status` tinyint unsigned DEFAULT NULL COMMENT '状态，0：正常，1：被举报，2：禁止查看',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `stars` bigint unsigned NOT NULL DEFAULT '4' COMMENT '评分',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `com_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.tb_shop_type definition
+
+CREATE TABLE `tb_shop_type` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '类型名称',
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图标',
+  `sort` int unsigned DEFAULT NULL COMMENT '顺序',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.tb_voucher definition
+
+CREATE TABLE `tb_voucher` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` bigint unsigned DEFAULT NULL COMMENT '商铺id',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代金券标题',
+  `sub_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '副标题',
+  `rules` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '使用规则',
+  `pay_value` bigint unsigned NOT NULL COMMENT '支付金额，单位是分。例如200代表2元',
+  `actual_value` bigint NOT NULL COMMENT '抵扣金额，单位是分。例如200代表2元',
+  `type` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '0,普通券；1,秒杀券',
+  `status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '1,上架; 2,下架; 3,过期',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `begin_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `stock` int DEFAULT '1' COMMENT '库存',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `vouvher_shop` (`shop_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.tb_voucher_order definition
+
+CREATE TABLE `tb_voucher_order` (
+  `id` bigint NOT NULL COMMENT '主键',
+  `user_id` bigint unsigned NOT NULL COMMENT '下单的用户id',
+  `voucher_id` bigint unsigned NOT NULL COMMENT '购买的代金券id',
+  `pay_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '支付方式 1：余额支付；2：支付宝；3：微信',
+  `status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '订单状态，1：未支付；2：已支付；3：已核销；4：已取消；5：退款中；6：已退款',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '下单时间',
+  `pay_time` timestamp NULL DEFAULT NULL COMMENT '支付时间',
+  `use_time` timestamp NULL DEFAULT NULL COMMENT '核销时间',
+  `refund_time` timestamp NULL DEFAULT NULL COMMENT '退款时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `voucher_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.tempt_order definition
+
+CREATE TABLE `tempt_order` (
+  `order_id` bigint NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `amount` bigint DEFAULT NULL,
+  `good_id` bigint DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `expireTime` datetime DEFAULT NULL,
+  `paymentStatus` varchar(14) DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.tenant_capacity definition
+
+CREATE TABLE `tenant_capacity` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Tenant ID',
+  `quota` int unsigned NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+  `usage` int unsigned NOT NULL DEFAULT '0' COMMENT '使用量',
+  `max_size` int unsigned NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
+  `max_aggr_count` int unsigned NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数',
+  `max_aggr_size` int unsigned NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+  `max_history_count` int unsigned NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_id` (`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='租户容量信息表';
+
+
+-- mybatis.tenant_info definition
+
+CREATE TABLE `tenant_info` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `kp` varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'kp',
+  `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
+  `tenant_name` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_name',
+  `tenant_desc` varchar(256) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'tenant_desc',
+  `create_source` varchar(32) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'create_source',
+  `gmt_create` bigint NOT NULL COMMENT '创建时间',
+  `gmt_modified` bigint NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_info_kptenantid` (`kp`,`tenant_id`),
+  KEY `idx_tenant_id` (`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin COMMENT='tenant_info';
+
+
+-- mybatis.user_feature definition
+
+CREATE TABLE `user_feature` (
+  `feature_id` int DEFAULT NULL,
+  `feature_type` varchar(100) DEFAULT NULL,
+  `feature_type_id` int DEFAULT NULL,
+  `feature_name` varchar(55) DEFAULT NULL,
+  KEY `feature_id` (`feature_id`),
+  KEY `idx_typ` (`feature_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.user_infor definition
+
+CREATE TABLE `user_infor` (
+  `user_id` bigint NOT NULL,
+  `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `last_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `first_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `name_en` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sex` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `date_birth` date DEFAULT NULL,
+  `id_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `origin_province` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `origin_city` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `default_user_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `active_yn` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `pic` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `icon` varchar(166) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.usercategory definition
+
+CREATE TABLE `usercategory` (
+  `id` int NOT NULL,
+  `type` int DEFAULT NULL,
+  `lable` varchar(20) DEFAULT NULL,
+  `description` varchar(40) DEFAULT NULL,
+  `type_name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_typ` (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.users definition
+
+CREATE TABLE `users` (
+  `username` varchar(50) NOT NULL,
+  `password` varchar(500) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.view_lables definition
+
+CREATE TABLE `view_lables` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.webemailbox definition
+
+CREATE TABLE `webemailbox` (
+  `email` varchar(50) DEFAULT NULL,
+  `code` varchar(5) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  `status` tinyint DEFAULT NULL,
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.blog definition
+
+CREATE TABLE `blog` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` bigint NOT NULL COMMENT '商户id',
+  `user_id` bigint unsigned NOT NULL COMMENT '用户id',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '标题',
+  `images` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '探店的照片，最多9张，多张以","隔开',
+  `content` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '探店的文字描述',
+  `liked` int unsigned DEFAULT '0' COMMENT '点赞数量',
+  `comments` int unsigned DEFAULT NULL COMMENT '评论数量',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `search_count` int DEFAULT NULL,
+  `type` int DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `d_blog_type` (`type`),
+  KEY `blog_by_shop` (`shop_id`),
+  CONSTRAINT `d_blog_type` FOREIGN KEY (`type`) REFERENCES `blog_lables` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.blog_comments definition
+
+CREATE TABLE `blog_comments` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `usr_id` bigint NOT NULL COMMENT '用户id',
+  `blog_id` bigint unsigned NOT NULL COMMENT 'id',
+  `parent_id` bigint unsigned NOT NULL COMMENT '关联的1级评论id，如果是一级评论，则值为0',
+  `answer_id` bigint unsigned NOT NULL COMMENT '回复的评论id',
+  `content` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '探店的文字描述',
+  `liked` int unsigned DEFAULT NULL COMMENT '点赞数',
+  `status` tinyint unsigned DEFAULT NULL COMMENT '状态，0：正常，1：被举报，2：禁止查看',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `blog_id` (`blog_id`),
+  KEY `usr_id` (`usr_id`),
+  CONSTRAINT `blog_comments_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`),
+  CONSTRAINT `blog_comments_ibfk_2` FOREIGN KEY (`usr_id`) REFERENCES `user_infor` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.class_infor definition
+
+CREATE TABLE `class_infor` (
+  `class_infor_id` int NOT NULL,
+  `class_infor_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `active_yn` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `grade` int NOT NULL,
+  `major_id` int NOT NULL,
+  PRIMARY KEY (`class_infor_id`) USING BTREE,
+  KEY `major_id` (`major_id`),
+  CONSTRAINT `class_infor_ibfk_1` FOREIGN KEY (`major_id`) REFERENCES `major` (`major_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.company_infor definition
+
+CREATE TABLE `company_infor` (
+  `company_id` int NOT NULL,
+  `company_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `group_id` int NOT NULL,
+  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `owner_agreement` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `address1` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `address2` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`company_id`) USING BTREE,
+  KEY `group_id` (`group_id`),
+  CONSTRAINT `company_infor_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `account_group` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.employee_infor definition
+
+CREATE TABLE `employee_infor` (
+  `employee_id` int NOT NULL,
+  `company_id` int DEFAULT NULL,
+  `job` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `department` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `entry_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `dismission_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`employee_id`) USING BTREE,
+  KEY `company_id` (`company_id`),
+  CONSTRAINT `employee_infor_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `company_infor` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.flight_infor definition
+
+CREATE TABLE `flight_infor` (
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `end_airport` varchar(20) DEFAULT NULL,
+  `location` varchar(20) DEFAULT NULL,
+  `start_airport` varchar(20) DEFAULT NULL,
+  `airline` varchar(20) DEFAULT NULL,
+  `flight_number` int DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `airline_logo` varchar(2048) DEFAULT NULL,
+  `description` varchar(20) DEFAULT NULL,
+  `picture` varchar(2048) DEFAULT NULL,
+  `id` int DEFAULT NULL,
+  `start_city_id` int DEFAULT NULL,
+  `end_city_id` int DEFAULT NULL,
+  KEY `sf` (`start_city_id`),
+  KEY `sfd` (`end_city_id`),
+  KEY `flight_price` (`price`),
+  CONSTRAINT `sf` FOREIGN KEY (`start_city_id`) REFERENCES `city_code` (`code`),
+  CONSTRAINT `sfd` FOREIGN KEY (`end_city_id`) REFERENCES `city_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.follow_table definition
+
+CREATE TABLE `follow_table` (
+  `user_id` bigint NOT NULL,
+  `follow_user_id` bigint NOT NULL,
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`,`follow_user_id`),
+  KEY `followed_u` (`follow_user_id`),
+  CONSTRAINT `followed_u` FOREIGN KEY (`follow_user_id`) REFERENCES `user_infor` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.hotel definition
+
+CREATE TABLE `hotel` (
+  `operation_time` time DEFAULT NULL,
+  `location` varchar(60) DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `name` varchar(44) DEFAULT NULL,
+  `description` varchar(1240) DEFAULT NULL,
+  `picture` text,
+  `comment` varchar(40) DEFAULT NULL,
+  `category` varchar(66) DEFAULT NULL,
+  `room_type` varchar(40) DEFAULT NULL,
+  `notice` varchar(2555) DEFAULT NULL,
+  `special_treatment` varchar(1200) DEFAULT NULL,
+  `customer` varchar(49) DEFAULT NULL,
+  `meal` varchar(100) DEFAULT NULL,
+  `contact` varchar(40) DEFAULT NULL,
+  `infrastructure` text,
+  `province` varchar(88) DEFAULT NULL,
+  `province_id` int DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `views` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `province_id` (`province_id`),
+  CONSTRAINT `province_id` FOREIGN KEY (`province_id`) REFERENCES `city_code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.hotel_voucher definition
+
+CREATE TABLE `hotel_voucher` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` bigint DEFAULT NULL COMMENT '商铺id',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代金券标题',
+  `sub_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '副标题',
+  `rules` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '使用规则',
+  `pay_value` bigint unsigned NOT NULL COMMENT '支付金额，单位是分。例如200代表2元',
+  `actual_value` bigint NOT NULL COMMENT '抵扣金额，单位是分。例如200代表2元',
+  `type` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '0,普通券；1,秒杀券',
+  `status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '1,上架; 2,下架; 3,过期',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `stock` int DEFAULT '1' COMMENT '库存',
+  `begin_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `h_v` (`shop_id`),
+  CONSTRAINT `h_v` FOREIGN KEY (`shop_id`) REFERENCES `hotel` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.offer definition
+
+CREATE TABLE `offer` (
+  `offer_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `company_id` int NOT NULL,
+  `offer_level` int NOT NULL,
+  `offer_student_check` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `offer_company_check` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `offer_status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`offer_id`) USING BTREE,
+  KEY `user_id` (`user_id`),
+  KEY `company_id` (`company_id`),
+  CONSTRAINT `offer_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `company_infor` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.restaurant definition
+
+CREATE TABLE `restaurant` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商铺名称',
+  `type_id` bigint unsigned NOT NULL COMMENT '商铺类型的id',
+  `images` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商铺图片，多个图片以'',''隔开',
+  `area` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商圈，例如陆家嘴',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '地址',
+  `x` double unsigned NOT NULL COMMENT '经度',
+  `y` double unsigned NOT NULL COMMENT '维度',
+  `avg_price` bigint unsigned DEFAULT NULL COMMENT '均价，取整数',
+  `sold` int unsigned NOT NULL COMMENT '销量',
+  `comments` int unsigned NOT NULL COMMENT '评论数量',
+  `score` int unsigned NOT NULL COMMENT '评分，1~5分，乘10保存，避免小数',
+  `open_hours` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '营业时间，例如 10:00-22:00',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `views` bigint unsigned NOT NULL DEFAULT '0' COMMENT '浏览量',
+  `city_id` int DEFAULT NULL,
+  `description` varchar(1024) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `foreign_key_type` (`type_id`) USING BTREE,
+  KEY `sfsdvdc` (`city_id`),
+  CONSTRAINT `sfsfddc` FOREIGN KEY (`city_id`) REFERENCES `city_code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.student_infor definition
+
+CREATE TABLE `student_infor` (
+  `student_id` int NOT NULL,
+  `class_id` int DEFAULT NULL,
+  `student_no` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `major_id` int NOT NULL,
+  `introduce` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `grade` int DEFAULT NULL,
+  `honour` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `internship_experience` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `admission_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `graduation_date` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `subject_grades` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `image` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`student_id`) USING BTREE,
+  KEY `class_id` (`class_id`),
+  KEY `major_id` (`major_id`),
+  CONSTRAINT `student_infor_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class_infor` (`class_infor_id`),
+  CONSTRAINT `student_infor_ibfk_2` FOREIGN KEY (`major_id`) REFERENCES `major` (`major_id`),
+  CONSTRAINT `student_infor_chk_1` CHECK (json_valid(`subject_grades`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.subway definition
+
+CREATE TABLE `subway` (
+  `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
+  `starting_point` varchar(20) DEFAULT NULL,
+  `ending_point` varchar(20) DEFAULT NULL,
+  `code` varchar(20) DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `description` varchar(20) DEFAULT NULL,
+  `picture` text,
+  `id` int DEFAULT NULL,
+  `counts` int DEFAULT NULL,
+  `duration` int DEFAULT NULL,
+  `level` varchar(66) DEFAULT NULL,
+  `start_city_code` int DEFAULT NULL,
+  `end_city_code` int DEFAULT NULL,
+  KEY `sfdd` (`end_city_code`),
+  KEY `sfddc` (`start_city_code`),
+  CONSTRAINT `fk_product_id` FOREIGN KEY (`start_city_code`) REFERENCES `city_code` (`code`),
+  CONSTRAINT `sfdd` FOREIGN KEY (`end_city_code`) REFERENCES `city_code` (`code`),
+  CONSTRAINT `sfddc` FOREIGN KEY (`start_city_code`) REFERENCES `city_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.tb_shop definition
+
+CREATE TABLE `tb_shop` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商铺名称',
+  `type_id` bigint unsigned NOT NULL COMMENT '商铺类型的id',
+  `images` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商铺图片，多个图片以'',''隔开',
+  `area` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商圈，例如陆家嘴',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '地址',
+  `x` varchar(30) COLLATE utf8mb4_general_ci NOT NULL COMMENT '经度',
+  `y` varchar(30) COLLATE utf8mb4_general_ci NOT NULL COMMENT '维度',
+  `avg_price` bigint unsigned DEFAULT NULL COMMENT '均价，取整数',
+  `sold` int unsigned NOT NULL COMMENT '销量',
+  `comments` int unsigned NOT NULL COMMENT '评论数量',
+  `score` int unsigned NOT NULL COMMENT '评分，1~5分，乘10保存，避免小数',
+  `open_hours` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '营业时间，例如 10:00-22:00',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `views` bigint unsigned NOT NULL DEFAULT '0' COMMENT '浏览量',
+  `city_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `foreign_key_type` (`type_id`) USING BTREE,
+  KEY `sfsddc` (`city_id`),
+  CONSTRAINT `sfsddc` FOREIGN KEY (`city_id`) REFERENCES `city_code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.user_portrait definition
+
+CREATE TABLE `user_portrait` (
+  `user_id` bigint NOT NULL,
+  `feature_id` int NOT NULL,
+  `category_id` int DEFAULT NULL,
+  `feature_value` int DEFAULT NULL,
+  `category_extent` int DEFAULT NULL,
+  `feature_type_id` int DEFAULT NULL,
+  `category_type_id` int DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`feature_id`),
+  KEY `feature_id` (`feature_id`),
+  KEY `category_id` (`category_id`),
+  KEY `fk_user_portrait_user_id` (`feature_type_id`),
+  KEY `fk_user_portrait_cate` (`category_type_id`),
+  CONSTRAINT `fk_user_portrait_cate` FOREIGN KEY (`category_type_id`) REFERENCES `usercategory` (`type`),
+  CONSTRAINT `fk_user_portrait_user_id` FOREIGN KEY (`feature_type_id`) REFERENCES `user_feature` (`feature_type_id`),
+  CONSTRAINT `user_portrait_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_infor` (`user_id`),
+  CONSTRAINT `user_portrait_ibfk_2` FOREIGN KEY (`feature_id`) REFERENCES `user_feature` (`feature_id`),
+  CONSTRAINT `user_portrait_ibfk_3` FOREIGN KEY (`category_id`) REFERENCES `usercategory` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.views_infor definition
+
+CREATE TABLE `views_infor` (
+  `operation_time` text,
+  `location` varchar(255) DEFAULT NULL,
+  `price` int DEFAULT '0',
+  `name` varchar(60) DEFAULT NULL,
+  `description` varchar(2048) DEFAULT NULL,
+  `picture` varchar(2048) DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `comment` varchar(2048) DEFAULT NULL,
+  `total_score` int DEFAULT '5',
+  `title` varchar(20) DEFAULT NULL,
+  `hot_rank` int DEFAULT NULL,
+  `special_treatment` varchar(2048) DEFAULT NULL COMMENT 'text',
+  `infrastructure` varchar(2048) DEFAULT NULL,
+  `comment_rank` varchar(10) DEFAULT NULL,
+  `contact` varchar(2048) DEFAULT NULL,
+  `status` varchar(2048) DEFAULT NULL,
+  `province_id` int DEFAULT NULL,
+  `type_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `province_id` (`province_id`),
+  KEY `fk_column_name` (`type_id`),
+  KEY `hot_id` (`hot_rank` DESC),
+  CONSTRAINT `fk_column_name` FOREIGN KEY (`type_id`) REFERENCES `view_lables` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.communication definition
+
+CREATE TABLE `communication` (
+  `communication_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `employee_id` int DEFAULT NULL,
+  `communication_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `communication` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `active_yn` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`communication_id`) USING BTREE,
+  KEY `user_id` (`user_id`),
+  KEY `employee_id` (`employee_id`),
+  CONSTRAINT `communication_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `employee_infor` (`employee_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.hotel_sales_order definition
+
+CREATE TABLE `hotel_sales_order` (
+  `order_id` bigint NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `amount` bigint DEFAULT NULL,
+  `good_id` bigint unsigned DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `paymentStatus` varchar(14) DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `h__v` (`good_id`),
+  KEY `hotel_by_user` (`user_id`),
+  CONSTRAINT `h__v` FOREIGN KEY (`good_id`) REFERENCES `hotel_voucher` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.relationship definition
+
+CREATE TABLE `relationship` (
+  `relationship_id` int NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `student_id` int DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,
+  `active_yn` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`relationship_id`) USING BTREE,
+  KEY `user_id` (`user_id`),
+  KEY `student_id` (`student_id`),
+  KEY `employee_id` (`employee_id`),
+  CONSTRAINT `relationship_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student_infor` (`student_id`),
+  CONSTRAINT `relationship_ibfk_3` FOREIGN KEY (`employee_id`) REFERENCES `employee_infor` (`employee_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+
+-- mybatis.scenic_voucher definition
+
+CREATE TABLE `scenic_voucher` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` bigint DEFAULT NULL COMMENT '商铺id',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代金券标题',
+  `sub_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '副标题',
+  `rules` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '使用规则',
+  `pay_value` bigint unsigned NOT NULL COMMENT '支付金额，单位是分。例如200代表2元',
+  `actual_value` bigint NOT NULL COMMENT '抵扣金额，单位是分。例如200代表2元',
+  `type` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '0,普通券；1,秒杀券',
+  `status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '1,上架; 2,下架; 3,过期',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `stock` int DEFAULT '1' COMMENT '库存',
+  `end_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `begin_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `start_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `d_s` (`shop_id`),
+  CONSTRAINT `d_s` FOREIGN KEY (`shop_id`) REFERENCES `views_infor` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+
+
+-- mybatis.shop_daily_stats definition
+
+CREATE TABLE `shop_daily_stats` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `page_views` int NOT NULL,
+  `comment_count` int NOT NULL,
+  `order_count` int NOT NULL,
+  `total_revenue` decimal(10,2) NOT NULL,
+  `total_cost` decimal(10,2) NOT NULL,
+  `total_profit` decimal(10,2) NOT NULL,
+  `shop_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fd_shop_id` (`shop_id`),
+  CONSTRAINT `fd_shop_id` FOREIGN KEY (`shop_id`) REFERENCES `tb_shop` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- mybatis.scenic_sales_order definition
+
+CREATE TABLE `scenic_sales_order` (
+  `order_id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL,
+  `amount` bigint DEFAULT NULL,
+  `good_id` bigint unsigned DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `paymentStatus` varchar(14) DEFAULT NULL,
+  `deal_price` int DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `s__v` (`good_id`),
+  KEY `view_user` (`user_id`),
+  CONSTRAINT `s__v` FOREIGN KEY (`good_id`) REFERENCES `scenic_voucher` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=444813813968011265 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

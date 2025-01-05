@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+
+        label {
+            font-size: 30px;
+            width: 55px;
+            height: 40px;
+            line-height: 26px;
+            margin-bottom: 0;
+        }
+        button.btn {
+            width: 80px;
+        }
+        .input-card {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class="input-card">
+
+    <div>
+        <label for="radius">我的周边景点距离</label>
+        <input type="text" id="radius">
+    </div>
+    <div>
+        <button onclick="sendAjaxRequest()">提交</button>
+    </div>
+    
+</div>
+<!--<div class="input-card" style="width:24rem;">-->
+<!--    <h4>添加、删除覆盖物</h4>-->
+<!--    <div class="input-item">-->
+<!--        <label>Marker：</label>-->
+<!--        <button class="btn" id="add-marker" style="margin-right:1rem;">添加Marker</button>-->
+<!--        <button class="btn" id="remove-marker">删除Marker</button>-->
+<!--    </div>-->
+<!--    <div class="input-item">-->
+<!--        <label>Circle：</label>-->
+<!--        <button class="btn" id="add-circle" style="margin-right:1rem;">添加Circle</button>-->
+<!--        <button class="btn" id="remove-circle">删除Circle</button>-->
+<!--    </div>-->
+<!--</div>-->
+<script src="https://webapi.amap.com/maps?v=2.0&key=41ab88acbe6d8144fb8c898ea57a1e77"></script>
+<script src="../node_modules/axios-0.18.0.js"></script>
+
+<script>
+    var map;
+    var marker;
+    var circle;
+
+    function initMap() {
+        map = new AMap.Map('container', {
+            resizeEnable: true,
+            zoom: 6,
+            // center: [116.397444, 39.909183]
+        });
+
+        marker = new AMap.Marker({
+            icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: [116.399327, 39.908562],
+            anchor:'bottom-center',
+            map: map
+        });
+
+        circle = new AMap.Circle({
+            center: new AMap.LngLat(116.397444, 39.909183),
+            radius: 50,
+            strokeColor: "#F33",
+            strokeOpacity: 1,
+            strokeWeight: 3,
+            fillColor: "#ee2200",
+            fillOpacity: 0.35,
+            map: map
+        });
+        map.setFitView();
+    }
+
+    window.onload = function() {
+        initMap();
+    };
+
+    function sendAjaxRequest() {
+       /* var longitudeInput = document.getElementById('longitude');
+        var latitudeInput = document.getElementById('latitude');
+        */
+        let radiusInput = document.getElementById('radius');
+        let longitude;
+        let latitude ;
+        let radius = parseFloat(radiusInput.value);
+        console.log(radius)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                 longitude = position.coords.longitude;
+                 latitude = position.coords.latitude;
+                console.log(longitude)
+                console.log(latitude)
+                map = new AMap.Map('container', {
+                    resizeEnable: true,
+                    zoom: 6,
+                    center: [longitude, latitude]
+                });
+
+                // 在地图上标记当前位置
+                let markerMe = new AMap.Marker({
+                    position: [longitude, latitude],
+                    icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png", // 使用红色标记图标
+                    map: map,
+                    title:'我'
+                });
+                map.add(markerMe);
+                // 设置地图中心为当前位置
+                map.setCenter([longitude, latitude]);
+                axios.get('http://localhost:8080/geo/getNearby', {
+                    params: {
+                        longitude: longitude,
+                        latitude: latitude,
+                        radius: radius
+                    }
+                }).then(function (res) {
+                    // 重新绘制标记点和覆盖物
+                    var data = res.data;
+                    Object.entries(data).forEach(function ([key, point]) {
+                        var marker = new AMap.Marker({
+                            icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+                            position: [point.x, point.y],
+                            anchor: 'bottom-center',
+                            map: map,
+                            label: {
+                                content: key,  // 使用地理信息的键作为标记点的文本标签内容
+                                offset: new AMap.Pixel(0, -25)  // 调整文本标签的位置，默认居中，可根据需要进行微调
+                            }
+                        });
+                        console.log(point.x)
+                        map.add(marker);
+                    });
+                    // 调整地图视图
+                    map.setFitView();
+                }).catch(function (error) {
+                    console.error('请求发生错误:', error);
+                });
+            }, function(error) {
+                console.error('获取位置信息失败:', error.message);
+            });
+        }
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heading Component</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="heading">
+    <h1 class="heading-title">网站标题</h1>
+    <div class="heading-settings">
+        <i class="fas fa-settings"></i>
+    </div>
+</header>
+
+<!-- 引入Font Awesome图标库，用于显示设置图标 -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
+<style>
+    body {
+margin: 0;
+padding: 0;
+font-family: Arial, sans-serif;
+}
+
+.heading {
+background-color: #333; /* 设置背景色 */
+color: #fff; /* 设置文字颜色 */
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px; /* 设置内边距 */
+}
+
+.heading-title {
+margin: 0; /* 移除标题的边距 */
+font-size: 24px; /* 设置标题字体大小 */
+}
+
+.heading-settings {
+cursor: pointer; /* 设置鼠标悬停效果 */
+}
+
+.heading-settings .fas {
+font-size: 20px; /* 设置图标字体大小 */
+}</style>

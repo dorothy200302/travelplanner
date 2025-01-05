@@ -1,0 +1,25 @@
+﻿# 依赖
+node_modules/
+dist/
+build/
+
+# 大文件
+*.jar
+stanford-corenlp-models-chinese.jar
+user-service-0.0.1-SNAPSHOT.jar
+order-service-0.0.1-SNAPSHOT.jar
+eureka-0.0.1-SNAPSHOT.jar
+
+# 字体文件
+*.ttc
+*.ttf
+msyh.ttc
+msyhbd.ttc
+msyhl.ttc
+simhei.ttf
+
+# 其他大文件
+*.exe
+*.map
+esbuild.exe
+index.full.min.js.map
